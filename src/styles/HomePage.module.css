@@ -1,0 +1,64 @@
+.aboutImage,
+.serviceImage {
+  border-radius: var(--radius-md);
+  width: 100%;
+  object-fit: cover;
+}
+
+.aboutImage {
+  min-height: 320px;
+}
+
+.servicesTitle {
+  margin-bottom: 1rem;
+}
+
+.sectionIntro {
+  margin-bottom: 1.8rem;
+  color: var(--color-muted);
+  max-width: 760px;
+}
+
+.approachList {
+  margin-top: 1.25rem;
+}
+
+.approachList li {
+  margin-bottom: 0.6rem;
+}
+
+.serviceCard {
+  text-align: center;
+}
+
+.serviceTitle {
+  margin-bottom: 0.65rem;
+  font-size: 1.4rem;
+}
+
+.serviceDescription {
+  margin-bottom: 1.1rem;
+  color: var(--color-muted);
+}
+
+.serviceImage {
+  height: 180px;
+  margin-bottom: 1rem;
+}
+
+.insightCard {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  background: var(--color-white);
+}
+
+.insightTitle {
+  margin-bottom: 0.65rem;
+  font-size: 1.2rem;
+}
+
+.insightDescription {
+  margin-bottom: 0;
+  color: var(--color-muted);
+}

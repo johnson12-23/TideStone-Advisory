@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --color-primary: #0b5d66;
+  --color-gold: #16c7c0;
+  --color-white: #ffffff;
+  --color-light: #effcfb;
+  --color-body: #15373b;
+  --color-muted: #5d7c80;
+  --color-border: #bfe7e5;
+  --color-link: #0a9f97;
+  --color-link-hover: #087a74;
+  --color-accent-dark: #109f99;
+
+  --font-heading: 'Lora', serif;
+  --font-body: 'Open Sans', sans-serif;
+
+  --radius-md: 0.5rem;
+  --section-y: 5rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  font-family: var(--font-body);
+  color: var(--color-body);
+  background-color: var(--color-white);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin-top: 0;
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+ul,
+ol {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding-left: 1.2rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}

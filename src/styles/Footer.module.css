@@ -1,0 +1,21 @@
+.footer {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.copy {
+  margin-bottom: 0.4rem;
+}
+
+.copy a {
+  color: var(--color-white);
+  text-decoration: underline;
+  text-underline-offset: 0.15rem;
+}
+
+.disclaimer {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}

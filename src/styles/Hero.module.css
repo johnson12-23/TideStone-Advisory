@@ -1,0 +1,42 @@
+.hero {
+  padding-block: 3rem;
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  text-align: center;
+  background-color: rgba(11, 93, 102, 0.72);
+  border-radius: var(--radius-md);
+  padding: 3rem 1.5rem;
+}
+
+.title {
+  color: var(--color-white);
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  margin-bottom: 1rem;
+  line-height: 1.25;
+}
+
+.subtitle {
+  color: var(--color-white);
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.iconWrap {
+  display: inline-flex;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    padding-block: 5rem;
+  }
+
+  .overlay {
+    padding: 3.2rem;
+  }
+}

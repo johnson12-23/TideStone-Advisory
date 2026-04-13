@@ -1,0 +1,30 @@
+.wrap {
+  padding-block: var(--section-y);
+}
+
+.heading {
+  margin-bottom: 0.75rem;
+}
+
+.sectionHeading {
+  margin-top: 1.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.linkButton {
+  border: none;
+  background: none;
+  color: var(--color-link);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.linkButton:hover {
+  color: var(--color-link-hover);
+}
+
+.note {
+  color: var(--color-muted);
+  margin-bottom: 0;
+}

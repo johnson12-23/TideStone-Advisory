@@ -24,12 +24,12 @@ function Navbar() {
   const isLoggedIn = Boolean(sessionStorage.getItem('username'))
 
   const links = useMemo(() => {
-    if (location.pathname === '/privacy' && isLoggedIn) {
+    if (isLoggedIn) {
       return [...baseLinks, { label: 'Portal', to: '/account' }]
     }
 
     return baseLinks
-  }, [isLoggedIn, location.pathname])
+  }, [isLoggedIn])
 
   const showAuthLink = !['/login', '/account'].includes(location.pathname)
 
@@ -73,6 +73,7 @@ function Navbar() {
                     onClick={() => {
                       sessionStorage.removeItem('username')
                       sessionStorage.removeItem('lastLogin')
+                      sessionStorage.removeItem('releaseWorkflowStage')
                       setMenuOpen(false)
                       navigate('/login')
                     }}

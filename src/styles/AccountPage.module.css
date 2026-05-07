@@ -22,11 +22,74 @@
   border-radius: inherit;
 }
 
+.warningCardProgress {
+  border-color: rgba(21, 185, 178, 0.75);
+}
+
+.warningCardProgress .warningBody {
+  background-color: rgba(21, 185, 178, 0.16);
+}
+
+.warningCardSuccess {
+  border-color: rgba(14, 154, 140, 0.75);
+}
+
+.warningCardSuccess .warningBody {
+  background-color: rgba(14, 154, 140, 0.16);
+}
+
 .summaryRow {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   align-items: center;
+}
+
+.workflowBadge {
+  display: inline-block;
+  padding: 0.35rem 0.65rem;
+  border-radius: 10rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.workflowBadgePending {
+  background-color: var(--color-gold);
+}
+
+.workflowBadgeProgress {
+  background-color: #15b9b2;
+}
+
+.workflowBadgeSuccess {
+  background-color: #0e9a8c;
+}
+
+.stepList {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.75rem 0 1rem;
+  padding-left: 1.1rem;
+}
+
+.stepList li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.stepDone {
+  color: #0e9a8c;
+}
+
+.stepActive {
+  color: #15b9b2;
+  font-weight: 700;
+}
+
+.stepPending {
+  color: var(--color-muted);
 }
 
 .status {

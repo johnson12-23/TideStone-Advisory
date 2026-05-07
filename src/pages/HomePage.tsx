@@ -59,7 +59,7 @@ function HomePage() {
   return (
     <>
       <Hero
-        action={{ label: 'Open Client Portal', to: '/login' }}
+        action={{ label: 'Access your account', to: '/login' }}
         backgroundImage={homeHeroImage}
         id="overview"
         subtitle="TideStone Advisory helps families protect, organize, and transition significant assets through trusted planning and transparent reporting."

@@ -11,7 +11,7 @@ function WealthPreservationPage() {
   return (
     <>
       <Hero
-        action={{ label: 'Open Client Portal', to: '/login' }}
+        action={{ label: 'Access your account', to: '/login' }}
         backgroundImage={wealthImage}
         icon={<Lock aria-hidden="true" size={30} />}
         subtitle="Protect family wealth across generations with governance, planning structures, and proactive risk controls."

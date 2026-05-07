@@ -22,6 +22,14 @@ import WealthPreservationPage from './pages/WealthPreservationPage'
 import styles from './styles/App.module.css'
 import { theme } from './theme'
 
+function hasSessionUser() {
+  try {
+    return Boolean(sessionStorage.getItem('username'))
+  } catch {
+    return false
+  }
+}
+
 function ThemeSync() {
   useEffect(() => {
     const root = document.documentElement
@@ -76,6 +84,22 @@ function Layout() {
   )
 }
 
+function ProtectedRoute() {
+  if (!hasSessionUser()) {
+    return <Navigate replace to="/login" />
+  }
+
+  return <Outlet />
+}
+
+function GuestOnlyRoute() {
+  if (hasSessionUser()) {
+    return <Navigate replace to="/account" />
+  }
+
+  return <Outlet />
+}
+
 function RouterContent() {
   return (
     <>
@@ -84,7 +108,9 @@ function RouterContent() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route element={<LoginPage />} path="/login" />
+          <Route element={<GuestOnlyRoute />}>
+            <Route element={<LoginPage />} path="/login" />
+          </Route>
           <Route element={<TrustManagementPage />} path="/trust-management" />
           <Route
             element={<InvestmentAdvisoryPage />}
@@ -93,7 +119,9 @@ function RouterContent() {
           <Route element={<WealthPreservationPage />} path="/wealth-preservation" />
           <Route element={<TermsPage />} path="/terms" />
           <Route element={<PrivacyPage />} path="/privacy" />
-          <Route element={<AccountPage />} path="/account" />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<AccountPage />} path="/account" />
+          </Route>
 
           <Route element={<Navigate replace to="/" />} path="/index.html" />
           <Route element={<Navigate replace to="/login" />} path="/login.html" />

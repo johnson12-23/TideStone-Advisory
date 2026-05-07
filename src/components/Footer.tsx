@@ -8,7 +8,7 @@ function Footer() {
     <footer className={styles.footer}>
       <Container>
         <p className={styles.copy}>
-          © 2026 TideStone Advisory. All rights reserved.{' '}
+          © 2023 TideStone Advisory. All rights reserved.{' '}
           <Link to="/terms">Service Terms</Link> |{' '}
           <Link to="/privacy">Privacy Policy</Link>
         </p>

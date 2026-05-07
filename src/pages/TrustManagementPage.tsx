@@ -15,7 +15,7 @@ function TrustManagementPage() {
   return (
     <>
       <Hero
-        action={{ label: 'Open Client Portal', to: '/login' }}
+        action={{ label: 'Access your account', to: '/login' }}
         backgroundImage={homeHeroImage}
         icon={<Shield aria-hidden="true" size={30} />}
         subtitle="Reliable trust administration with transparent milestones, documented controls, and clear next steps for every stakeholder."

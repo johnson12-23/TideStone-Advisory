@@ -7,6 +7,7 @@ import styles from '../styles/AuthPage.module.css'
 
 const VALID_USERNAME = 'Myinheritance'
 const VALID_PASSWORD = 'Thomas12@'
+const CLIENT_DISPLAY_NAME = 'Felicia Sani Cherry'
 
 function LoginPage() {
   const navigate = useNavigate()
@@ -18,7 +19,7 @@ function LoginPage() {
     event.preventDefault()
 
     if (username === VALID_USERNAME && password === VALID_PASSWORD) {
-      sessionStorage.setItem('username', 'Thomas Shimchock')
+      sessionStorage.setItem('username', CLIENT_DISPLAY_NAME)
       setShowError(false)
       navigate('/account')
       return

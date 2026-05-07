@@ -9,7 +9,7 @@ import {
   Wallet,
   XCircle,
 } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import Modal from '../components/Modal'
@@ -20,6 +20,11 @@ import commonStyles from '../styles/Common.module.css'
 import styles from '../styles/AccountPage.module.css'
 
 type TransactionIcon = 'success' | 'failed' | 'pending'
+type ReleaseStage =
+  | 'pending_retainer'
+  | 'compliance_review'
+  | 'release_scheduled'
+  | 'released'
 
 interface Transaction {
   date: string
@@ -30,7 +35,9 @@ interface Transaction {
   details: string
 }
 
-const transactions: Transaction[] = [
+const WORKFLOW_STAGE_STORAGE_KEY = 'releaseWorkflowStage'
+
+const baseTransactions: Transaction[] = [
   {
     date: 'October 1, 2025',
     description: 'Estate Liquidity Transfer',
@@ -75,28 +82,179 @@ const transactions: Transaction[] = [
   },
 ]
 
-const getDisplayName = () => sessionStorage.getItem('username') || 'Thomas Shimchock'
+const workflowSteps: Array<{ id: ReleaseStage; label: string }> = [
+  { id: 'pending_retainer', label: 'Administrative Retainer' },
+  { id: 'compliance_review', label: 'Compliance Review' },
+  { id: 'release_scheduled', label: 'Release Scheduled' },
+  { id: 'released', label: 'Funds Released' },
+]
 
-const getLastLogin = () => {
-  const storedLastLogin = sessionStorage.getItem('lastLogin')
-  const currentTime = new Date('January 20, 2026 15:41:00 GMT')
+const releaseStageContent: Record<
+  ReleaseStage,
+  {
+    badge: string
+    panelMessage: string
+    panelTitle: string
+    status: string
+    tone: 'pending' | 'progress' | 'success'
+  }
+> = {
+  pending_retainer: {
+    panelTitle: 'Next Step',
+    panelMessage:
+      'Submit the $27,000.00 administrative retainer to activate final release scheduling.',
+    status:
+      'Assets are secured in trust pending completion of the administrative retainer and final compliance confirmation.',
+    badge: 'Retainer Required',
+    tone: 'pending',
+  },
+  compliance_review: {
+    panelTitle: 'Workflow In Progress',
+    panelMessage:
+      'Retainer received. Compliance and trustee validation are now in progress.',
+    status:
+      'Operations is validating account documentation and release controls before scheduling transfer.',
+    badge: 'Compliance Review',
+    tone: 'progress',
+  },
+  release_scheduled: {
+    panelTitle: 'Release Scheduled',
+    panelMessage:
+      'Final release is queued in the next transfer window and awaiting execution.',
+    status:
+      'Release has been scheduled. Transfer execution will complete at the end of the processing window.',
+    badge: 'Release Scheduled',
+    tone: 'progress',
+  },
+  released: {
+    panelTitle: 'Release Complete',
+    panelMessage:
+      'All checks are complete and funds have been released to your designated account.',
+    status:
+      'Release workflow is complete. Your account remains available for post-release documents and records.',
+    badge: 'Release Complete',
+    tone: 'success',
+  },
+}
 
-  if (!storedLastLogin) {
-    sessionStorage.setItem('lastLogin', currentTime.toISOString())
+const DEFAULT_DISPLAY_NAME = 'Felicia Sani Cherry'
+
+const getDisplayName = () => {
+  const storedName = sessionStorage.getItem('username')?.trim()
+
+  if (storedName) {
+    return storedName
   }
 
-  const displayTime = storedLastLogin ? new Date(storedLastLogin) : currentTime
+  return DEFAULT_DISPLAY_NAME
+}
 
-  sessionStorage.setItem('lastLogin', currentTime.toISOString())
-  return displayTime.toLocaleString('en-US', { timeZone: 'GMT' })
+const getLastLogin = () => {
+  const storedLogin = sessionStorage.getItem('lastLogin')
+
+  if (storedLogin) {
+    const parsed = new Date(storedLogin)
+
+    if (!Number.isNaN(parsed.getTime())) {
+      return parsed.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      })
+    }
+  }
+
+  const currentDate = new Date()
+  sessionStorage.setItem('lastLogin', currentDate.toISOString())
+
+  return currentDate.toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  })
+}
+
+const getStoredReleaseStage = (): ReleaseStage => {
+  const storedStage = sessionStorage.getItem(WORKFLOW_STAGE_STORAGE_KEY)
+
+  if (
+    storedStage === 'pending_retainer' ||
+    storedStage === 'compliance_review' ||
+    storedStage === 'release_scheduled' ||
+    storedStage === 'released'
+  ) {
+    return storedStage
+  }
+
+  return 'pending_retainer'
 }
 
 function AccountPage() {
   const [displayName] = useState(getDisplayName)
   const [lastLogin] = useState(getLastLogin)
   const [paymentModalOpen, setPaymentModalOpen] = useState(false)
+  const [releaseStage, setReleaseStage] = useState<ReleaseStage>(getStoredReleaseStage)
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transaction | null>(null)
+
+  useEffect(() => {
+    sessionStorage.setItem(WORKFLOW_STAGE_STORAGE_KEY, releaseStage)
+  }, [releaseStage])
+
+  const releaseContent = releaseStageContent[releaseStage]
+
+  const timelineTransactions = useMemo(() => {
+    const updatedTransactions = baseTransactions.map((transaction) => {
+      if (transaction.description === 'Administrative Retainer') {
+        if (releaseStage === 'pending_retainer') {
+          return transaction
+        }
+
+        return {
+          ...transaction,
+          status: 'Completed',
+          icon: 'success' as const,
+          details:
+            'Retainer verified by operations and applied to final release processing.',
+        }
+      }
+
+      return transaction
+    })
+
+    if (releaseStage === 'release_scheduled' || releaseStage === 'released') {
+      updatedTransactions.unshift({
+        date: 'January 22, 2026',
+        description: 'Release Scheduling Confirmation',
+        amount: '$13,000,000.00',
+        status: releaseStage === 'released' ? 'Completed' : 'Scheduled',
+        icon: releaseStage === 'released' ? 'success' : 'pending',
+        details:
+          releaseStage === 'released'
+            ? 'Scheduled release executed and archived in account records.'
+            : 'Transfer instructions are approved and queued for execution.',
+      })
+    }
+
+    if (releaseStage === 'released') {
+      updatedTransactions.unshift({
+        date: 'January 24, 2026',
+        description: 'Final Release Transfer',
+        amount: '$13,000,000.00',
+        status: 'Released',
+        icon: 'success',
+        details: 'Final transfer completed to designated beneficiary account.',
+      })
+    }
+
+    return updatedTransactions
+  }, [releaseStage])
 
   const selectedStatusClass = useMemo(() => {
     if (!selectedTransaction) {
@@ -138,6 +296,35 @@ function AccountPage() {
     return styles.statusSuccess
   }
 
+  const handleAdvanceReleaseWorkflow = () => {
+    setReleaseStage((currentStage) => {
+      if (currentStage === 'compliance_review') {
+        return 'release_scheduled'
+      }
+
+      if (currentStage === 'release_scheduled') {
+        return 'released'
+      }
+
+      return currentStage
+    })
+  }
+
+  const getStepClass = (stepId: ReleaseStage) => {
+    const activeIndex = workflowSteps.findIndex((step) => step.id === releaseStage)
+    const stepIndex = workflowSteps.findIndex((step) => step.id === stepId)
+
+    if (stepIndex < activeIndex) {
+      return styles.stepDone
+    }
+
+    if (stepIndex === activeIndex) {
+      return styles.stepActive
+    }
+
+    return styles.stepPending
+  }
+
   return (
     <section className={styles.wrap}>
       <Container>
@@ -146,21 +333,30 @@ function AccountPage() {
           <p className={commonStyles.textMuted}>Last session: {lastLogin}</p>
         </div>
 
-        <div className={styles.warningCard}>
+        <div
+          className={`${styles.warningCard} ${
+            releaseContent.tone === 'success'
+              ? styles.warningCardSuccess
+              : releaseContent.tone === 'progress'
+                ? styles.warningCardProgress
+                : ''
+          }`}
+        >
           <div className={styles.warningBody}>
             <h5 className={commonStyles.mb2}>
-              <AlertTriangle aria-hidden="true" size={18} /> Next Step
+              <AlertTriangle aria-hidden="true" size={18} /> {releaseContent.panelTitle}
             </h5>
             <p className={commonStyles.mb0}>
-              Submit the $27,000.00 administrative retainer to activate final
-              release scheduling.{' '}
-              <button
-                className={styles.payNowLink}
-                onClick={() => setPaymentModalOpen(true)}
-                type="button"
-              >
-                Submit now
-              </button>
+              {releaseContent.panelMessage}{' '}
+              {releaseStage === 'pending_retainer' ? (
+                <button
+                  className={styles.payNowLink}
+                  onClick={() => setPaymentModalOpen(true)}
+                  type="button"
+                >
+                  Submit now
+                </button>
+              ) : null}
             </p>
           </div>
         </div>
@@ -174,21 +370,53 @@ function AccountPage() {
               <strong>Available Balance:</strong>{' '}
               <span className={styles.balanceHighlight}>$13,000,000.00</span>
             </p>
-            <span className={commonStyles.badgeWarning}>Release Workflow Active</span>
+            <span
+              className={`${styles.workflowBadge} ${
+                releaseContent.tone === 'success'
+                  ? styles.workflowBadgeSuccess
+                  : releaseContent.tone === 'progress'
+                    ? styles.workflowBadgeProgress
+                    : styles.workflowBadgePending
+              }`}
+            >
+              {releaseContent.badge}
+            </span>
           </div>
           <p className={commonStyles.mt2}>
-            <strong>Current status:</strong> Assets are secured in trust pending
-            completion of the administrative retainer and final compliance
-            confirmation.
+            <strong>Current status:</strong> {releaseContent.status}
           </p>
+          <ol className={styles.stepList}>
+            {workflowSteps.map((step) => (
+              <li className={getStepClass(step.id)} key={step.id}>
+                {step.id === releaseStage ? (
+                  <Clock3 aria-hidden="true" size={14} />
+                ) : (
+                  <CheckCircle2 aria-hidden="true" size={14} />
+                )}
+                {step.label}
+              </li>
+            ))}
+          </ol>
           <p>
             <Link className={styles.termsLink} to="/terms">
               Review Client Service Terms
             </Link>
           </p>
-          <Button onClick={() => setPaymentModalOpen(true)}>
-            <HandCoins aria-hidden="true" size={16} /> Submit Retainer
-          </Button>
+          {releaseStage === 'pending_retainer' ? (
+            <Button onClick={() => setPaymentModalOpen(true)}>
+              <HandCoins aria-hidden="true" size={16} /> Submit Retainer
+            </Button>
+          ) : null}
+          {releaseStage === 'compliance_review' ? (
+            <Button onClick={handleAdvanceReleaseWorkflow}>
+              <Check aria-hidden="true" size={16} /> Mark Compliance Complete
+            </Button>
+          ) : null}
+          {releaseStage === 'release_scheduled' ? (
+            <Button onClick={handleAdvanceReleaseWorkflow}>
+              <Check aria-hidden="true" size={16} /> Confirm Final Release
+            </Button>
+          ) : null}
         </Card>
 
         <Card className={commonStyles.mb4}>
@@ -220,7 +448,7 @@ function AccountPage() {
                 </tr>
               </thead>
               <tbody>
-                {transactions.map((transaction) => (
+                {timelineTransactions.map((transaction) => (
                   <tr key={`${transaction.date}-${transaction.description}`}>
                     <td>{transaction.date}</td>
                     <td>{transaction.description}</td>
@@ -259,9 +487,7 @@ function AccountPage() {
             </Button>
             <Button
               onClick={() => {
-                window.alert(
-                  'Retainer instructions confirmed. Notify support once your transfer is complete.',
-                )
+                setReleaseStage('compliance_review')
                 setPaymentModalOpen(false)
               }}
             >

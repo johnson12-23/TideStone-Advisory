@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import Button from '../components/ui/Button'
 import Container from '../components/ui/Container'
@@ -76,6 +76,13 @@ function LoginPage() {
                 Enter Portal
               </Button>
             </form>
+
+            <div className={styles.linkRow}>
+              <span>New to TideStone?</span>
+              <Link className={styles.inlineLink} to="/signup">
+                Create a client account
+              </Link>
+            </div>
           </div>
         </div>
       </Container>

@@ -16,6 +16,7 @@ import InvestmentAdvisoryPage from './pages/InvestmentAdvisoryPage'
 import LoginPage from './pages/LoginPage'
 import NotFoundPage from './pages/NotFoundPage'
 import PrivacyPage from './pages/PrivacyPage'
+import SignupPage from './pages/SignupPage'
 import TermsPage from './pages/TermsPage'
 import TrustManagementPage from './pages/TrustManagementPage'
 import WealthPreservationPage from './pages/WealthPreservationPage'
@@ -110,6 +111,7 @@ function RouterContent() {
           <Route index element={<HomePage />} />
           <Route element={<GuestOnlyRoute />}>
             <Route element={<LoginPage />} path="/login" />
+            <Route element={<SignupPage />} path="/signup" />
           </Route>
           <Route element={<TrustManagementPage />} path="/trust-management" />
           <Route
@@ -125,6 +127,7 @@ function RouterContent() {
 
           <Route element={<Navigate replace to="/" />} path="/index.html" />
           <Route element={<Navigate replace to="/login" />} path="/login.html" />
+          <Route element={<Navigate replace to="/signup" />} path="/signup.html" />
           <Route
             element={<Navigate replace to="/trust-management" />}
             path="/trust-management.html"

@@ -51,3 +51,84 @@
   font-family: inherit;
   font-size: 1rem;
 }
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.step {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.stepActive {
+  background: rgba(14, 111, 120, 0.12);
+  border-color: rgba(14, 111, 120, 0.4);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.actionsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.summaryCard {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: rgba(248, 245, 238, 0.6);
+}
+
+.sectionTitle {
+  margin-bottom: 0.75rem;
+}
+
+.summaryRow {
+  margin-bottom: 0.45rem;
+}
+
+.checkboxRow {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  margin: 1rem 0;
+  color: var(--color-muted);
+}
+
+.checkboxRow input {
+  margin-top: 0.2rem;
+}
+
+.linkRow {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  color: var(--color-muted);
+  flex-wrap: wrap;
+}
+
+.inlineLink {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.successCard {
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .actionsRow {
+    flex-direction: column;
+  }
+}

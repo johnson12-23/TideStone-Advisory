@@ -55,6 +55,29 @@ const insights = [
   },
 ]
 
+const faqItems = [
+  {
+    question: 'How quickly can we begin?',
+    answer:
+      'Most engagements begin with a discovery call within one week, followed by a tailored roadmap for your family, trust, and investment priorities.',
+  },
+  {
+    question: 'How can a client register?',
+    answer:
+      'Clients can register by visiting the client login page and completing the secure sign-up steps, after which they can access their account and shared documents.',
+  },
+  {
+    question: 'Is the client portal secure?',
+    answer:
+      'Yes. We use a private client workspace to keep documents, approvals, and account updates organized and protected.',
+  },
+  {
+    question: 'Can you help with both trust and investment planning?',
+    answer:
+      'Absolutely. Our team coordinates trust administration, investment strategy, and preservation planning to keep every decision aligned.',
+  },
+]
+
 function HomePage() {
   return (
     <>
@@ -125,6 +148,23 @@ function HomePage() {
               <article className={styles.insightCard} key={insight.title}>
                 <h3 className={styles.insightTitle}>{insight.title}</h3>
                 <p className={styles.insightDescription}>{insight.description}</p>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className={`${commonStyles.section} ${commonStyles.sectionLight}`} id="faq">
+        <Container>
+          <SectionTitle className={styles.servicesTitle}>Frequently Asked Questions</SectionTitle>
+          <p className={styles.sectionIntro}>
+            A few common questions clients ask before getting started with TideStone Advisory.
+          </p>
+          <div className={styles.faqList}>
+            {faqItems.map((item) => (
+              <article className={styles.faqCard} key={item.question}>
+                <h3 className={styles.faqQuestion}>{item.question}</h3>
+                <p className={styles.faqAnswer}>{item.answer}</p>
               </article>
             ))}
           </div>

@@ -15,6 +15,7 @@ const baseLinks: NavLinkItem[] = [
   { label: 'Approach', to: '/#approach' },
   { label: 'Solutions', to: '/#solutions' },
   { label: 'Insights', to: '/#insights' },
+  { label: 'FAQ', to: '/#faq' },
 ]
 
 function Navbar() {
